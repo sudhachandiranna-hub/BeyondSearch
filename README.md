@@ -4,12 +4,40 @@ Everything -- the 3-agent CrewAI pipeline, SQLite history, Google Sheets
 logging, LangSmith tracing, and the Streamlit UI -- lives in one file:
 `app.py`. No separate backend, no multi-file module structure.
 
-Pipeline: **Knowledge Agent** (answers from the model's own knowledge, no
-web access) -> **Web Research Agent** (searches live via Serper.dev, writes an
-independent cited answer) -> **Recording** (writes `answer.txt`, logs a row
-to Google Sheets, saves the question/answers to local history). Each stage
-runs in a background thread while the UI polls for live progress, so the UI
-staying responsive never slows the agents down.
+Each stage runs in a background thread while the UI polls for live progress,
+so the UI staying responsive never slows the agents down.
+
+## Agents
+
+1. **Knowledge Agent** -- answers from the model's own trained knowledge
+   only. No tools, no web access. Fast; can be stale on time-sensitive facts.
+2. **Web Research Agent** -- searches live via Serper.dev, writes an
+   independent answer with inline `[n]` citations backed by real URLs.
+3. **Recording Agent** -- no reasoning, just persists the result. Calls one
+   tool (`Record Results`) that writes `answer.txt`, logs to Google Sheets,
+   and saves to local history -- see below.
+
+Sequential: Knowledge -> Research -> Recording, each stage's output feeding
+the next.
+
+## Recording: answer.txt vs. Google Sheets
+
+- **`answer.txt`** -- always written, one file per question, saved to
+  `data/answers/answer_<request_id>.txt`. Contains the question, both
+  agents' answers, references, and timing. This is the primary record.
+- **Google Sheets** -- extra, optional audit trail. Appends one row per
+  query (timestamp, both answers, timings, status) to an `ExecutionLog`
+  worksheet. Only runs if `GOOGLE_SHEETS_SPREADSHEET_ID` and the service
+  account credentials are configured; if not, it's silently skipped -- no
+  crash, nothing else breaks.
+
+## LangSmith tracing
+
+If `LANGCHAIN_API_KEY` is set, each query is wrapped in one root trace
+("BeyondSearch - User Query") with a child span per LLM call and per tool
+call (Web Search, Record Results) -- so prompts, responses, and latency for
+every agent step are inspectable at smith.langchain.com. If not configured,
+tracing is a no-op and the pipeline behaves identically either way.
 
 ## 1. Setup (run once)
 
