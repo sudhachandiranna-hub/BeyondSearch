@@ -54,7 +54,6 @@ tracing is a no-op and the pipeline behaves identically either way.
 ## 1. Setup (run once)
 
 ```bash
-cd crewAgents
 python -m venv .venv
 # Windows:
 .venv\Scripts\activate
