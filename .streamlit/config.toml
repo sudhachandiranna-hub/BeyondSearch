@@ -1,0 +1,13 @@
+[theme]
+# BeyondSearch enterprise theme. Streamlit's own default primaryColor is
+# #FF4B4B (red) and native widgets -- text inputs, buttons, sliders, focus
+# rings -- pull from this value even when custom CSS overrides everything
+# it can reach. Without this file, any native-widget border/focus state our
+# CSS didn't explicitly strip (like the ask bar's BaseWeb input wrapper)
+# falls back to that red. Setting it here fixes the root cause once,
+# instead of chasing it selector-by-selector.
+primaryColor = "#16A34A"
+backgroundColor = "#F5F6F8"
+secondaryBackgroundColor = "#FFFFFF"
+textColor = "#0F172A"
+font = "sans serif"
