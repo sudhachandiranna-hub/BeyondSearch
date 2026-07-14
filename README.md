@@ -1,8 +1,12 @@
 # BeyondSearch
+
+Landing Screen For users to Ask Query
 <img width="1912" height="907" alt="image" src="https://github.com/user-attachments/assets/014b5a0a-ae60-4d83-a937-a10a75f969cf" />
 
+Query is processed by the 3 Agents Sequentially
 <img width="1912" height="911" alt="image" src="https://github.com/user-attachments/assets/6ed7781f-e782-4d47-9ddc-a23920772f97" />
 
+Answer is displayed , Along with different routes of Tracing in Google Sheets, langsmith , Answer.txt. 
 <img width="1920" height="2136" alt="screencapture-localhost-8501-2026-07-14-19_33_31" src="https://github.com/user-attachments/assets/2451bfb3-4d14-40d0-ace5-cb1b6461b6ab" />
 
 Everything -- the 3-agent CrewAI pipeline, SQLite history, Google Sheets
